@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" 
+xmlns:subscriptions="http://org.wso2.carbon/createdb/" 
+xmlns:workflow.createdb.ss.carbon.wso2.org="http://workflow.createdb.ss.carbon.wso2.org"
+xmlns:applications="http://org.wso2.carbon/createdb/"
+xmlns:callback.workflow.ss.carbon.wso2.org="http://callback.workflow.ss.carbon.wso2.org"
+xmlns:b4p="http://docs.oasis-open.org/ns/bpel4people/bpel4people/200803">
+  
+<process name="workflow.createdb.ss.carbon.wso2.org:CreateDBApprovalWorkFlowProcess">
+    <active>true</active>
+    <retired>false</retired>
+    <process-events generate="all"/>
+    
+	<provide partnerLink="client">
+	<service name="workflow.createdb.ss.carbon.wso2.org:CreateDBApprovalWorkFlowProcess" 		port="CreateDBApprovalWorkFlowProcessPort">
+     	</service>
+    	</provide>
+    
+	<provide partnerLink="AAPL" correlationFilter="b4p:b4pFilter">
+      	<service name="applications:CreateDBServiceCB" port="CreateDBPortCB"/>
+   	</provide>
+    
+	<invoke partnerLink="AAPL">
+      	<service name="applications:CreateDBService" port="CreateDBPort">
+	<endpoint xmlns="http://wso2.org/bps/bpel/endpoint/config" endpointReference="./../../../../repository/conf/epr/CreateDBService.epr"></endpoint>
+	</service>
+    	</invoke>
+  
+	<invoke partnerLink="CBPL">
+	<service name="callback.workflow.ss.carbon.wso2.org:WorkflowCallbackService" port="WorkflowCallbackServiceHttpSoap11Endpoint">
+	<endpoint xmlns="http://wso2.org/bps/bpel/endpoint/config" endpointReference="./../../../../repository/conf/epr/CreateDBCallbackService.epr"></endpoint>
+      	</service>
+    	</invoke>
+</process>
+</deploy>

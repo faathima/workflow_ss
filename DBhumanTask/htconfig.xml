@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Copyright (c) WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~      http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+-->
+<hic:HTDeploymentConfig xmlns:hic="http://wso2.org/ht/schema/deployment/config"
+	xmlns:createdb="http://org.wso2.carbon/createdb/"
+	xmlns:createdbtask="http://org.wso2.carbon">
+	<hic:task name="createdbtask:CreateDBApproval">
+		<hic:publish>
+			<hic:service name="createdb:CreateDBService" port="CreateDBPort" />
+		</hic:publish>
+		<hic:callback>
+			<hic:service name="createdb:CreateDBServiceCB" port="CreateDBPortCB" />
+		</hic:callback>
+	</hic:task>
+	<hic:notification name="createdbtask:CreateDBApprovalReminder">
+		<hic:publish>
+			<hic:service name="createdb:CreateDBReminderService" port="CreateDBReminderPort" />
+		</hic:publish>
+	</hic:notification>
+</hic:HTDeploymentConfig>

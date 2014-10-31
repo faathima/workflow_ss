@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) OASIS Open 2009. All Rights Reserved.
+-->
+<htd:humanInteractions
+        xmlns:htd="http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803"
+        xmlns:htt="http://docs.oasis-open.org/ns/bpel4people/ws-humantask/types/200803"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:cl="http://org.wso2.carbon/createdb/"
+        xmlns:tns="http://org.wso2.carbon"
+        targetNamespace="http://org.wso2.carbon"
+        xmlns:test10="http://workflow.createdb.ss.carbon.wso2.org"
+        xsi:schemaLocation="http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803 ../../xml/ws-humantask.xsd">
+
+    <htd:documentation>
+        Delete DataBase
+    </htd:documentation>
+
+    <htd:import importType="http://schemas.xmlsoap.org/wsdl/"
+                location="sample.wsdl"
+                namespace="http://org.wso2.carbon/createdb/"/>
+
+    <htd:logicalPeopleGroups>
+
+        <htd:logicalPeopleGroup name="admin">
+            <htd:documentation xml:lang="en-US">
+                The group of admin.
+            </htd:documentation>
+            <htd:parameter name="role" type="xsd:string"/>
+        </htd:logicalPeopleGroup>
+
+        <htd:logicalPeopleGroup name="user">
+            <htd:documentation xml:lang="en-US">
+                The user.
+            </htd:documentation>
+            <htd:parameter name="role" type="xsd:string"/>
+        </htd:logicalPeopleGroup>
+
+    </htd:logicalPeopleGroups>
+
+
+    <htd:tasks>
+        <htd:task name="CreateDBApproval">
+            <htd:documentation xml:lang="en-US">
+                This task is used to Create Databse
+                approval.
+            </htd:documentation>
+
+            <htd:interface portType="cl:CreateDBHandlingPT"
+                           operation="approve"
+                           responsePortType="cl:CreateDBHandlingCallbackPT"
+                           responseOperation="approvalResponse"/>
+
+	    <!--htd:priority>
+                htd:getInput("CreateDBApprovalRequest")/test10:priority
+            </htd:priority-->
+
+            <htd:peopleAssignments>
+
+                <htd:potentialOwners>
+                    <htd:from logicalPeopleGroup="admin">
+                        <htd:argument name="role">
+                            admin
+                        </htd:argument>
+                    </htd:from>
+                </htd:potentialOwners>
+
+            </htd:peopleAssignments>
+
+            <htd:delegation potentialDelegatees="nobody"/>
+
+            <htd:presentationElements>
+                <htd:name xml:lang="en-US">Create Datebase</htd:name>
+                
+                <htd:presentationParameters>
+                    <htd:presentationParameter name="databaseName"
+                                               type="xsd:string">
+                        htd:getInput("CreateDBApprovalRequest")/test10:DatabaseName
+                    </htd:presentationParameter>
+                    <htd:presentationParameter name="dbInstantName"
+                                               type="xsd:int">
+                        htd:getInput("CreateDBApprovalRequest")/test10:DBSInstanceName
+                    </htd:presentationParameter>
+                </htd:presentationParameters>
+
+                <htd:subject xml:lang="en-US">
+                    Approve Databse $databaseName$
+                </htd:subject>
+                
+                <htd:description xml:lang="en-US" contentType="text/plain">
+                    Approve this requist
+                </htd:description>
+                <htd:description xml:lang="en-US" contentType="text/html">
+                    <![CDATA[
+          <p>
+            Approve this <b>requist</b>
+          </p>
+          ]]>
+                </htd:description>
+
+            </htd:presentationElements>
+        </htd:task>
+    </htd:tasks>
+
+
+    <htd:notifications>
+        <htd:notification name="CreateDBApprovalReminder">
+            <htd:documentation xml:lang="en-US">
+                This notification is used to remind people of pending
+                out-dated claim approvals. Recipients of this notification
+                maybe overriden when it is referenced.
+            </htd:documentation>
+            <htd:interface portType="cl:CreateDBApprovalReminderPT"
+                           operation="notify"/>
+            <htd:peopleAssignments>
+                <htd:recipients>
+                    <htd:from logicalPeopleGroup="admin">
+                        <htd:argument name="role">
+                            admin
+                        </htd:argument>
+                    </htd:from>
+                    <!--htd:from>
+                        <htd:literal>
+                            <htt:organizationalEntity>
+                                <htt:user>Alan</htt:user>
+                                <htt:user>Dieter</htt:user>
+                                <htt:user>Frank</htt:user>
+                                <htt:user>Gerhard</htt:user>
+                                <htt:user>Ivana</htt:user>
+                                <htt:user>Karsten</htt:user>
+                                <htt:user>Matthias</htt:user>
+                                <htt:user>Patrick</htt:user>
+                            </htt:organizationalEntity>
+                        </htd:literal>
+                    </htd:from-->
+                </htd:recipients>
+            </htd:peopleAssignments>
+
+            <htd:presentationElements>
+                <htd:name xml:lang="en-US">Create DB</htd:name>
+                
+                <htd:presentationParameters>
+                    <!--htd:presentationParameter name="firstname"
+                                               type="xsd:string">
+                        htd:getInput("firstname")
+                    </htd:presentationParameter>
+                    <htd:presentationParameter name="lastname"
+                                               type="xsd:string">
+                        htd:getInput("lastname")
+                    </htd:presentationParameter-->
+                    <htd:presentationParameter name="databaseName"
+                                               type="xsd:string">
+                        htd:getInput("CreateDBApprovalNotificationRequest")/test10:DatabaseName
+                    </htd:presentationParameter>
+                    <htd:presentationParameter name="dbInstantName"
+                                               type="xsd:int">
+                        htd:getInput("CreateDBApprovalNotificationRequest")/test10:DBSInstanceName_ID
+                    </htd:presentationParameter>
+                    <!--htd:presentationParameter name="id" type="xsd:string">
+                        htd:getInput("taskId")
+                    </htd:presentationParameter-->
+                </htd:presentationParameters>
+                <htd:subject xml:lang="en-US">
+                    Claim approval for $databaseName$, $dbInstantName$ is overdue.
+                </htd:subject>
+            </htd:presentationElements>
+        </htd:notification>
+    </htd:notifications>
+</htd:humanInteractions>

@@ -1,0 +1,9 @@
+<WorkFlowExtensions>
+    <!--DatabaseCreation executor="org.wso2.carbon.rssmanager.core.workflow.DatabseCreationSimpleWorkflowExecutor"/-->
+    <DatabaseCreation executor="org.wso2.carbon.rssmanager.core.workflow.DatabaseCreationWSWorkflowExecutor">
+         <Property name="serviceEndpoint">http://localhost:9765/services/CreateDBApprovalWorkFlowProcess</Property>
+         <Property name="username">admin</Property>
+         <Property name="password">admin</Property>
+         <Property name="callbackURL">http://localhost:9763/services/WorkflowCallbackService</Property>
+    </DatabaseCreation>
+</WorkFlowExtensions>
